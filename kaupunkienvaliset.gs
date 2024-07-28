@@ -41,7 +41,7 @@ function iterateThroughRows() {
   return data;
 }
 
-// sort by 'Tulos'
+// sort by result/'Tulos' in descending order
 function compareDescOrder(a, b) {
   if(a.tulos > b.tulos)
     return -1;
@@ -50,7 +50,7 @@ function compareDescOrder(a, b) {
   return 0;
 }
 
-// sort by 'Tulos'
+// sort by result/'Tulos' in ascending oreder
 function compareAsceOrder(a, b) {
   if(a.tulos < b.tulos)
     return -1;
@@ -64,12 +64,23 @@ function getHenkkari(data) {
   data.forEach(function (row) {
     if (row[2] == "Henkkari") {
       var tulosString = +row[5];
-      var henkkari = {
+      var newHenkkari = {
         nimi : row[4],
         edustus : row[1],
         tulos : tulosString
       }
-      henkkarit.push(henkkari)
+      // iterate henkkarit for duplicates
+      henkkarit.forEach(function (entry) {
+        // found match in name/'nimi'
+        if (newHenkkari.nimi == entry.nimi) {
+          // if new result/'tulos' is greater than old one, remove old result
+          if (newHenkkari.tulos > entry.tulos) {
+            // use splice to cut old smaller result
+            henkkarit.splice(henkkarit.indexOf(entry),1);
+          }
+        }
+      });
+      henkkarit.push(newHenkkari)
     }
   });
   henkkarit.sort(compareDescOrder)
@@ -82,12 +93,23 @@ function getViisiottelu(data) {
     if (row[2] == "5-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
       tulosString = +tulosString;
-      var viisiottelu = {
+      var newViisiottelu = {
         nimi : row[4],
         edustus : row[1],
         tulos : tulosString
       }
-      viisiottelut.push(viisiottelu)
+      // iterate viisiottelut for duplicates
+      viisiottelut.forEach(function (entry) {
+        // found match in name/'nimi'
+        if (newViisiottelu.nimi == entry.nimi) {
+          // if new result/'tulos' is greater than old one, remove old result
+          if (newViisiottelu.tulos > entry.tulos) {
+            // use splice to cut old smaller result
+            viisiottelut.splice(viisiottelut.indexOf(entry),1);
+          }
+        }
+      });
+      viisiottelut.push(newViisiottelu)
     }
   });
   viisiottelut.sort(compareDescOrder)
@@ -100,12 +122,23 @@ function getSeitsenottelu(data) {
     if (row[2] == "7-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
       tulosString = +tulosString;
-      var seitsenottelu = {
+      var newSeitsenottelu = {
         nimi : row[4],
         edustus : row[1],
         tulos : tulosString
       }
-      seitsenottelut.push(seitsenottelu)
+      // iterate seitsenottelut for duplicates
+      seitsenottelut.forEach(function (entry) {
+        // found match in name/'nimi'
+        if (newSeitsenottelu.nimi == entry.nimi) {
+          // if new result/'tulos' is greater than old one, remove old result
+          if (newSeitsenottelu.tulos > entry.tulos) {
+            // use splice to cut old smaller result
+            seitsenottelut.splice(seitsenottelut.indexOf(entry),1);
+          }
+        }
+      });
+      seitsenottelut.push(newSeitsenottelu)
     }
   });
   seitsenottelut.sort(compareDescOrder)
@@ -117,12 +150,23 @@ function getJoukkuekentta(data) {
   data.forEach(function (row) {
     if (row[2].includes("Joukkuekenttä")) {
       var tulosString = +row[5];
-      var joukkuekentta = {
+      var newJoukkuekentta = {
         nimi : row[4],
         edustus : row[1],
         tulos : tulosString
       }
-      joukkuekentat.push(joukkuekentta)
+      // iterate joukkuekentat for duplicates
+      joukkuekentat.forEach(function (entry) {
+        // found match in name/'nimi'
+        if (newJoukkuekentta.nimi == entry.nimi) {
+          // if new result/'tulos' is greater than old one, remove old result
+          if (newJoukkuekentta.tulos > entry.tulos) {
+            // use splice to cut old smaller result
+            joukkuekentat.splice(joukkuekentat.indexOf(entry),1);
+          }
+        }
+      });
+      joukkuekentat.push(newJoukkuekentta)
     }
   });
   joukkuekentat.sort(compareDescOrder)
@@ -134,12 +178,23 @@ function getPystyhydra(data) {
   data.forEach(function (row) {
     if (row[2].includes("Pystyhydra")) {
       var tulosString = +row[5];
-      var pystyhydra = {
+      var newPystyhydra = {
         nimi : row[4],
         edustus : row[1],
         tulos : tulosString
       }
-      pystyhydrat.push(pystyhydra)
+      // iterate pystyhydrat for duplicates
+      pystyhydrat.forEach(function (entry) {
+        // found match in name/'nimi'
+        if (newPystyhydra.nimi == entry.nimi) {
+          // if new result/'tulos' is greater than old one, remove old result
+          if (newPystyhydra.tulos < entry.tulos) {
+            // use splice to cut old smaller result
+            pystyhydrat.splice(pystyhydrat.indexOf(entry),1);
+          }
+        }
+      });
+      pystyhydrat.push(newPystyhydra)
     }
   });
   pystyhydrat.sort(compareAsceOrder)
@@ -151,12 +206,23 @@ function getSviippitreeni(data) {
   data.forEach(function (row) {
     if (row[2].includes("Smuulin Sviippitreeni")) {
       var tulosString = +row[5];
-      var sviippitreeni = {
+      var newSviippitreeni = {
         nimi : row[4],
         edustus : row[1],
         tulos : tulosString
       }
-      sviippitreenit.push(sviippitreeni)
+      // iterate sviippitreenit for duplicates
+      sviippitreenit.forEach(function (entry) {
+        // found match in name/'nimi'
+        if (newSviippitreeni.nimi == entry.nimi) {
+          // if new result/'tulos' is greater than old one, remove old result
+          if (newSviippitreeni.tulos > entry.tulos) {
+            // use splice to cut old smaller result
+            sviippitreenit.splice(sviippitreenit.indexOf(entry),1);
+          }
+        }
+      });
+      sviippitreenit.push(newSviippitreeni)
     }
   });
   sviippitreenit.sort(compareDescOrder)
