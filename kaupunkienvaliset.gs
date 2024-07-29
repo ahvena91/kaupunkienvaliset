@@ -17,12 +17,273 @@ function main() {
   var pystyhydratNaiset = getPystyhydratNaiset(data);
   var sviippitreenitNaiset = getSviippitreenitNaiset(data);
 
+  // write results into 'Tulostaulu'
   writeTulostaulu(henkkaritYleinen, henkkaritNaiset, "A","C");
   writeTulostaulu(viisiottelutYleinen, viisiottelutNaiset, "D","F");
   writeTulostaulu(seitsenottelutYleinen, seitsenottelutNaiset, "G","I");
   writeTulostaulu(joukkuekentatYleinen, joukkuekentatNaiset, "J","L");
   writeTulostaulu(pystyhydratYleinen, pystyhydratNaiset, "M","O");
   writeTulostaulu(sviippitreenitYleinen, sviippitreenitNaiset, "P","R");
+
+  var pisteetHenkkaritY = getPisteetHenkkaritY(henkkaritYleinen);
+  var pisteetHenkkaritN = getPisteetHenkkaritN(henkkaritNaiset);
+  //
+  var pisteetViisiottelutY = getPisteetHenkkaritY(viisiottelutYleinen);
+  var pisteetViisiottelutN = getPisteetHenkkaritN(viisiottelutNaiset);
+  //
+  var pisteetSeitsenottelutY = getPisteetHenkkaritY(seitsenottelutYleinen);
+  var pisteetSeitsenottelutN = getPisteetHenkkaritN(seitsenottelutNaiset);
+  //
+  var pisteetJoukkuekentatY = getPisteetHenkkaritY(joukkuekentatYleinen);
+  var pisteetJoukkuekentatN = getPisteetHenkkaritN(joukkuekentatNaiset);
+  //
+  var pisteetPystyhydratY = getPisteetHenkkaritY(pystyhydratYleinen);
+  var pisteetPystyhydratN = getPisteetHenkkaritN(pystyhydratNaiset);
+  //
+  var pisteetSviippitreenitY = getPisteetHenkkaritY(sviippitreenitYleinen);
+  var pisteetSviippitreenitN = getPisteetHenkkaritN(sviippitreenitNaiset);
+
+  writePistetaulu(pisteetHenkkaritY, pisteetHenkkaritN, "B");
+  writePistetaulu(pisteetViisiottelutY, pisteetViisiottelutN, "D");
+  writePistetaulu(pisteetSeitsenottelutY, pisteetSeitsenottelutN, "F");
+  writePistetaulu(pisteetJoukkuekentatY, pisteetJoukkuekentatN, "H");
+  writePistetaulu(pisteetPystyhydratY, pisteetPystyhydratN, "J");
+  writePistetaulu(pisteetSviippitreenitY, pisteetSviippitreenitN, "L");
+}
+
+// Writes sheet 'Tulostaulu' according to clumnStart and columnEnd positions
+function writePistetaulu(pisteetY, pisteetN, column) {
+  var rangeStringYleinen = "";
+  var rangeStringNaiset = "";
+  var sheet = SpreadsheetApp.getActive().getSheetByName("Pistetaulu");
+  rangeStringYleinen = column + "8:" + column + "11";
+  rangeStringNaiset = column + "14:" + column + "17";
+  var clearRangeYleinen = sheet.getRange(rangeStringYleinen);
+  var clearRangeNaiset = sheet.getRange(rangeStringNaiset);
+
+  // clear old content
+  clearRangeYleinen.clearContent();
+  clearRangeNaiset.clearContent();
+  const startRowYleinen = 8;
+  const startRowNaiset = 14;
+
+  // iterate length of points array (Yleinen)
+  for (let i = 0; i<pisteetY.length; i++) {
+    var j = i + startRowYleinen;
+    rangeString = column + j;
+    // get range according to given range string
+    var henkkaritRange = sheet.getRange(rangeString);
+    //var tmpArray = [[tulostauluYleinen[i].nimi, tulostauluYleinen[i].edustus, tulostauluYleinen[i].tulos]];
+    // finally write values to given range
+    henkkaritRange.setValue(pisteetY[i]);
+  }
+
+  // iterate length of result array (Naiset)
+  for (let i = 0; i<pisteetN.length; i++) {
+    var j = i + startRowNaiset;
+    rangeString = column + j;
+    // get range according to given range string
+    var henkkaritRange = sheet.getRange(rangeString);
+    // finally write values to given range
+    henkkaritRange.setValue(pisteetN[i]);
+  }
+}
+
+/* Henkkaripisteet
+*
+*
+*
+*
+*/
+
+function getPisteetHenkkaritY(tuloksetY) {
+  var henkkariPisteet = {
+    henkkariTampere : 0,
+    henkkariOulu : 0,
+    henkkariLappee : 0,
+    henkkariHelsinki : 0
+  }
+
+  var highestAmount = 30;
+  var evenCasesArray = [];
+
+  // iterate results 'Yleinen'
+  for (let i=0; i<tuloksetY.length; i++) {
+    if(i+1 < tuloksetY.length) {
+      // is next result equal
+      if(tuloksetY[i].tulos == tuloksetY[i+1].tulos) {
+        var evenCase = {
+          edustus : tuloksetY[i].edustus,
+          pisteet : (highestAmount-i)
+        }
+        evenCasesArray.push(evenCase);
+
+        if(i+2 < tuloksetY.length) {
+          if(tuloksetY[i].tulos == tuloksetY[i+2].tulos) {
+            continue;
+          }
+          else {
+            var evenCase = {
+              edustus : tuloksetY[i+1].edustus,
+              pisteet : (highestAmount-i-1)
+            }
+            evenCasesArray.push(evenCase);
+          }
+        }
+      }
+      else {
+        if(evenCasesArray == 0) {
+          if(tuloksetY[i].edustus.includes("Länsi")) {
+            henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
+          }
+          else if(tuloksetY[i].edustus.includes("Pohjoinen")) {
+            henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
+          }
+          else if(tuloksetY[i].edustus.includes("Itä")) {
+            henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
+          }
+          else if(tuloksetY[i].edustus.includes("Etelä")) {
+            henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
+          }
+        }
+        else {
+          var temp = 0;
+          evenCasesArray.forEach(function (evenCase) {
+            temp = temp + evenCase.pisteet;
+          });
+          var meanValue = temp/evenCasesArray.length;
+          evenCasesArray.forEach(function (evenCase) {
+            if(evenCase.edustus.includes("Länsi")) {
+              henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + meanValue;
+            }
+            else if(evenCase.edustus.includes("Pohjoinen")) {
+              henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + meanValue;
+            }
+            else if(evenCase.edustus.includes("Itä")) {
+              henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + meanValue;
+            }
+            else if(evenCase.edustus.includes("Etelä")) {
+              henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + meanValue;
+            }
+          });
+          evenCasesArray = [];
+        }
+      }
+    }
+    else {
+      if(tuloksetY[i].edustus.includes("Länsi")) {
+        henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
+      }
+      else if(tuloksetY[i].edustus.includes("Pohjoinen")) {
+        henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
+      }
+      else if(tuloksetY[i].edustus.includes("Itä")) {
+        henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
+      }
+      else if(tuloksetY[i].edustus.includes("Etelä")) {
+        henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
+      }
+    }
+  }
+
+  // Arrange to array for Pistetaulu writing
+  var henkkariPisteArray = [henkkariPisteet.henkkariOulu, henkkariPisteet.henkkariTampere, henkkariPisteet.henkkariLappee, henkkariPisteet.henkkariHelsinki];
+  return henkkariPisteArray;
+}
+
+function getPisteetHenkkaritN(tuloksetN) {
+  var henkkariPisteet = {
+    henkkariTampere : 0,
+    henkkariOulu : 0,
+    henkkariLappee : 0,
+    henkkariHelsinki : 0
+  }
+
+  var highestAmount = 30;
+  var evenCasesArray = [];
+
+  // iterate results 'Naiset'
+  for (let i=0; i<tuloksetN.length; i++) {
+    if(i+1 < tuloksetN.length) {
+      // is next result equal
+      if(tuloksetN[i].tulos == tuloksetN[i+1].tulos) {
+        var evenCase = {
+          edustus : tuloksetN[i].edustus,
+          pisteet : (highestAmount-i)
+        }
+        evenCasesArray.push(evenCase);
+
+        if(i+2 < tuloksetN.length) {
+          if(tuloksetN[i].tulos == tuloksetN[i+2].tulos) {
+            continue;
+          }
+          else {
+            var evenCase = {
+              edustus : tuloksetN[i+1].edustus,
+              pisteet : (highestAmount-i-1)
+            }
+            evenCasesArray.push(evenCase);
+          }
+        }
+      }
+      else {
+        if(evenCasesArray == 0) {
+          if(tuloksetN[i].edustus.includes("Länsi")) {
+            henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
+          }
+          else if(tuloksetN[i].edustus.includes("Pohjoinen")) {
+            henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
+          }
+          else if(tuloksetN[i].edustus.includes("Itä")) {
+            henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
+          }
+          else if(tuloksetN[i].edustus.includes("Etelä")) {
+            henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
+          }
+        }
+        else {
+          var temp = 0;
+          evenCasesArray.forEach(function (evenCase) {
+            temp = temp + evenCase.pisteet;
+          });
+          var meanValue = temp/evenCasesArray.length;
+          evenCasesArray.forEach(function (evenCase) {
+            if(evenCase.edustus.includes("Länsi")) {
+              henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + meanValue;
+            }
+            else if(evenCase.edustus.includes("Pohjoinen")) {
+              henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + meanValue;
+            }
+            else if(evenCase.edustus.includes("Itä")) {
+              henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + meanValue;
+            }
+            else if(evenCase.edustus.includes("Etelä")) {
+              henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + meanValue;
+            }
+          });
+          evenCasesArray = [];
+        }
+      }
+    }
+    else {
+      if(tuloksetN[i].edustus.includes("Länsi")) {
+        henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
+      }
+      else if(tuloksetN[i].edustus.includes("Pohjoinen")) {
+        henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
+      }
+      else if(tuloksetN[i].edustus.includes("Itä")) {
+        henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
+      }
+      else if(tuloksetN[i].edustus.includes("Etelä")) {
+        henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
+      }
+    }
+  }
+
+  // Arrange to array for Pistetaulu writing
+  var henkkariPisteArray = [henkkariPisteet.henkkariOulu, henkkariPisteet.henkkariTampere, henkkariPisteet.henkkariLappee, henkkariPisteet.henkkariHelsinki];
+  return henkkariPisteArray;
 }
 
 // Writes sheet 'Tulostaulu' according to clumnStart and columnEnd positions
@@ -122,7 +383,7 @@ function getHenkkaritYleinen(data) {
   return henkkaritYleinen;
 }
 
-// returns array of henkkarit from series naiset
+// returns array of henkkarit fromUntitled spreadsheet series naiset
 function getHenkkaritNaiset(data) {
   var henkkaritNaiset = [];
   data.forEach(function (row) {
