@@ -121,19 +121,7 @@ function getPisteet(tulokset) {
           pisteet : (highestAmount-i)
         }
         evenCasesArray.push(evenCase);
-
-        if(i+2 < tulokset.length) {
-          if(tulokset[i].tulos == tulokset[i+2].tulos) {
-            continue;
-          }
-          else {
-            var evenCase = {
-              edustus : tulokset[i+1].edustus,
-              pisteet : (highestAmount-i-1)
-            }
-            evenCasesArray.push(evenCase);
-          }
-        }
+        continue;
       }
       else {
         if(evenCasesArray == 0) {
@@ -151,6 +139,13 @@ function getPisteet(tulokset) {
           }
         }
         else {
+          // push last even score
+          var evenCase = {
+            edustus : tulokset[i].edustus,
+            pisteet : (highestAmount-i)
+          }
+          evenCasesArray.push(evenCase);
+          // roll even cases open and calculated mean
           var temp = 0;
           evenCasesArray.forEach(function (evenCase) {
             temp = temp + evenCase.pisteet;
@@ -175,17 +170,47 @@ function getPisteet(tulokset) {
       }
     }
     else {
-      if(tulokset[i].edustus.includes("Länsi")) {
-        pisteet.pisteetTampere = pisteet.pisteetTampere + (highestAmount-i);
+      if(evenCasesArray == 0) {
+        if(tulokset[i].edustus.includes("Länsi")) {
+          pisteet.pisteetTampere = pisteet.pisteetTampere + (highestAmount-i);
+        }
+        else if(tulokset[i].edustus.includes("Pohjoinen")) {
+          pisteet.pisteetOulu = pisteet.pisteetOulu + (highestAmount-i);
+        }
+        else if(tulokset[i].edustus.includes("Itä")) {
+          pisteet.pisteetLappee = pisteet.pisteetLappee + (highestAmount-i);
+        }
+        else if(tulokset[i].edustus.includes("Etelä")) {
+          pisteet.pisteetHelsinki = pisteet.pisteetHelsinki + (highestAmount-i);
+        }
       }
-      else if(tulokset[i].edustus.includes("Pohjoinen")) {
-        pisteet.pisteetOulu = pisteet.pisteetOulu + (highestAmount-i);
-      }
-      else if(tulokset[i].edustus.includes("Itä")) {
-        pisteet.pisteetLappee = pisteet.pisteetLappee + (highestAmount-i);
-      }
-      else if(tulokset[i].edustus.includes("Etelä")) {
-        pisteet.pisteetHelsinki = pisteet.pisteetHelsinki + (highestAmount-i);
+      else {
+        // push last even score
+        var evenCase = {
+          edustus : tulokset[i].edustus,
+          pisteet : (highestAmount-i)
+        }
+        evenCasesArray.push(evenCase);
+        var temp = 0;
+        evenCasesArray.forEach(function (evenCase) {
+          temp = temp + evenCase.pisteet;
+        });
+        var meanValue = temp/evenCasesArray.length;
+        evenCasesArray.forEach(function (evenCase) {
+          if(evenCase.edustus.includes("Länsi")) {
+            pisteet.pisteetTampere = pisteet.pisteetTampere + meanValue;
+          }
+          else if(evenCase.edustus.includes("Pohjoinen")) {
+            pisteet.pisteetOulu = pisteet.pisteetOulu + meanValue;
+          }
+          else if(evenCase.edustus.includes("Itä")) {
+            pisteet.pisteetLappee = pisteet.pisteetLappee + meanValue;
+          }
+          else if(evenCase.edustus.includes("Etelä")) {
+            pisteet.pisteetHelsinki = pisteet.pisteetHelsinki + meanValue;
+          }
+        });
+        evenCasesArray = [];
       }
     }
   }
