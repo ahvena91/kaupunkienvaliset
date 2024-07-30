@@ -249,6 +249,7 @@ function compareAsceOrder(a, b) {
 function getHenkkaritYleinen(data) {
   var henkkaritYleinen = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2] == "Henkkari") {
       var tulosString = +row[5];
@@ -285,6 +286,9 @@ function getHenkkaritYleinen(data) {
     }
   });
   henkkaritYleinen.sort(compareDescOrder)
+  if(henkkaritYleinen.length > MAX_AMOUNT) {
+    henkkaritYleinen.splice(-(henkkaritYleinen.length-MAX_AMOUNT),henkkaritYleinen.length-MAX_AMOUNT);
+  }
   return henkkaritYleinen;
 }
 
@@ -292,6 +296,7 @@ function getHenkkaritYleinen(data) {
 function getHenkkaritNaiset(data) {
   var henkkaritNaiset = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2] == "Henkkari") {
       var tulosString = +row[5];
@@ -322,12 +327,16 @@ function getHenkkaritNaiset(data) {
     }
   });
   henkkaritNaiset.sort(compareDescOrder)
+  if(henkkaritNaiset.length > MAX_AMOUNT) {
+    henkkaritNaiset.splice(-(henkkaritNaiset.length-MAX_AMOUNT),henkkaritNaiset.length-MAX_AMOUNT);
+  }
   return henkkaritNaiset;
 }
 
 function getViisiottelutYleinen(data) {
   var viisiottelut = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2] == "5-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
@@ -359,12 +368,16 @@ function getViisiottelutYleinen(data) {
     }
   });
   viisiottelut.sort(compareDescOrder)
+  if(viisiottelut.length > MAX_AMOUNT) {
+    viisiottelut.splice(-(viisiottelut.length-MAX_AMOUNT),viisiottelut.length-MAX_AMOUNT);
+  }
   return viisiottelut;
 }
 
 function getViisiottelutNaiset(data) {
   var viisiottelutNaiset = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2] == "5-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
@@ -396,12 +409,16 @@ function getViisiottelutNaiset(data) {
     }
   });
   viisiottelutNaiset.sort(compareDescOrder)
+  if(viisiottelutNaiset.length > MAX_AMOUNT) {
+    viisiottelutNaiset.splice(-(viisiottelutNaiset.length-MAX_AMOUNT),viisiottelutNaiset.length-MAX_AMOUNT);
+  }
   return viisiottelutNaiset;
 }
 
 function getSeitsenottelutYleinen(data) {
   var seitsenottelut = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2] == "7-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
@@ -433,12 +450,16 @@ function getSeitsenottelutYleinen(data) {
     }
   });
   seitsenottelut.sort(compareDescOrder)
+  if(seitsenottelut.length > MAX_AMOUNT) {
+    seitsenottelut.splice(-(seitsenottelut.length-MAX_AMOUNT),seitsenottelut.length-MAX_AMOUNT);
+  }
   return seitsenottelut;
 }
 
 function getSeitsenottelutNaiset(data) {
   var seitsenottelutNaiset = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2] == "7-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
@@ -470,12 +491,16 @@ function getSeitsenottelutNaiset(data) {
     }
   });
   seitsenottelutNaiset.sort(compareDescOrder)
+  if(seitsenottelutNaiset.length > MAX_AMOUNT) {
+    seitsenottelutNaiset.splice(-(seitsenottelutNaiset.length-MAX_AMOUNT),seitsenottelutNaiset.length-MAX_AMOUNT);
+  }
   return seitsenottelutNaiset;
 }
 
 function getJoukkuekentatYleinen(data) {
   var joukkuekentat = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2].includes("Joukkuekenttä")) {
       var tulosString = +row[5];
@@ -506,12 +531,16 @@ function getJoukkuekentatYleinen(data) {
     }
   });
   joukkuekentat.sort(compareDescOrder)
+  if(joukkuekentat.length > MAX_AMOUNT) {
+    joukkuekentat.splice(-(joukkuekentat.length-MAX_AMOUNT),joukkuekentat.length-MAX_AMOUNT);
+  }
   return joukkuekentat;
 }
 
 function getJoukkuekentatNaiset(data) {
   var joukkuekentatNaiset = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2].includes("Joukkuekenttä")) {
       var tulosString = +row[5];
@@ -542,12 +571,16 @@ function getJoukkuekentatNaiset(data) {
     }
   });
   joukkuekentatNaiset.sort(compareDescOrder)
+  if(joukkuekentatNaiset.length > MAX_AMOUNT) {
+    joukkuekentatNaiset.splice(-(joukkuekentatNaiset.length-MAX_AMOUNT),joukkuekentatNaiset.length-MAX_AMOUNT);
+  }
   return joukkuekentatNaiset;
 }
 
 function getPystyhydratYleinen(data) {
   var pystyhydrat = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2].includes("Pystyhydra")) {
       var tulosString = +row[5];
@@ -578,12 +611,16 @@ function getPystyhydratYleinen(data) {
     }
   });
   pystyhydrat.sort(compareAsceOrder)
+  if(pystyhydrat.length > MAX_AMOUNT) {
+    pystyhydrat.splice(-(pystyhydrat.length-MAX_AMOUNT),pystyhydrat.length-MAX_AMOUNT);
+  }
   return pystyhydrat;
 }
 
 function getPystyhydratNaiset(data) {
   var pystyhydratNaiset = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2].includes("Pystyhydra")) {
       var tulosString = +row[5];
@@ -614,12 +651,16 @@ function getPystyhydratNaiset(data) {
     }
   });
   pystyhydratNaiset.sort(compareAsceOrder)
+  if(pystyhydratNaiset.length > MAX_AMOUNT) {
+    pystyhydratNaiset.splice(-(pystyhydratNaiset.length-MAX_AMOUNT),pystyhydratNaiset.length-MAX_AMOUNT);
+  }
   return pystyhydratNaiset;
 }
 
 function getSviippitreenitYleinen(data) {
   var sviippitreenit = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2].includes("Smuulin Sviippitreeni")) {
       var tulosString = +row[5];
@@ -650,12 +691,16 @@ function getSviippitreenitYleinen(data) {
     }
   });
   sviippitreenit.sort(compareDescOrder)
+  if(sviippitreenit.length > MAX_AMOUNT) {
+    sviippitreenit.splice(-(sviippitreenit.length-MAX_AMOUNT),sviippitreenit.length-MAX_AMOUNT);
+  }
   return sviippitreenit;
 }
 
 function getSviippitreenitNaiset(data) {
   var sviippitreenitNaiset = [];
   var duplicate = false;
+  const MAX_AMOUNT = 30;
   data.forEach(function (row) {
     if (row[2].includes("Smuulin Sviippitreeni")) {
       var tulosString = +row[5];
@@ -686,5 +731,8 @@ function getSviippitreenitNaiset(data) {
     }
   });
   sviippitreenitNaiset.sort(compareDescOrder)
+  if(sviippitreenitNaiset.length > MAX_AMOUNT) {
+    sviippitreenitNaiset.splice(-(sviippitreenitNaiset.length-MAX_AMOUNT),sviippitreenitNaiset.length-MAX_AMOUNT);
+  }
   return sviippitreenitNaiset;
 }
