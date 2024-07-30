@@ -1,57 +1,29 @@
 function main() {
   // get data
   var data = iterateRows();
-
-  // get sorted 
-  var henkkaritYleinen = getHenkkaritYleinen(data);
-  var viisiottelutYleinen = getViisiottelutYleinen(data);
-  var seitsenottelutYleinen = getSeitsenottelutYleinen(data);
-  var joukkuekentatYleinen = getJoukkuekentatYleinen(data);
-  var pystyhydratYleinen = getPystyhydratYleinen(data);
-  var sviippitreenitYleinen = getSviippitreenitYleinen(data);
-
-  var henkkaritNaiset = getHenkkaritNaiset(data);
-  var viisiottelutNaiset = getViisiottelutNaiset(data);
-  var seitsenottelutNaiset = getSeitsenottelutNaiset(data);
-  var joukkuekentatNaiset = getJoukkuekentatNaiset(data);
-  var pystyhydratNaiset = getPystyhydratNaiset(data);
-  var sviippitreenitNaiset = getSviippitreenitNaiset(data);
-
   // write results into 'Tulostaulu'
-  writeTulostaulu(henkkaritYleinen, henkkaritNaiset, "A","C");
-  writeTulostaulu(viisiottelutYleinen, viisiottelutNaiset, "D","F");
-  writeTulostaulu(seitsenottelutYleinen, seitsenottelutNaiset, "G","I");
-  writeTulostaulu(joukkuekentatYleinen, joukkuekentatNaiset, "J","L");
-  writeTulostaulu(pystyhydratYleinen, pystyhydratNaiset, "M","O");
-  writeTulostaulu(sviippitreenitYleinen, sviippitreenitNaiset, "P","R");
+  writeTulostaulu(getHenkkaritYleinen(data), getHenkkaritNaiset(data), "A","C");
+  writeTulostaulu(getViisiottelutYleinen(data), getViisiottelutNaiset(data), "D","F");
+  writeTulostaulu(getSeitsenottelutYleinen(data), getSeitsenottelutNaiset(data), "G","I");
+  writeTulostaulu(getJoukkuekentatYleinen(data), getJoukkuekentatNaiset(data), "J","L");
+  writeTulostaulu(getPystyhydratYleinen(data), getPystyhydratNaiset(data), "M","O");
+  writeTulostaulu(getSviippitreenitYleinen(data), getSviippitreenitNaiset(data), "P","R");
 
-  var pisteetHenkkaritY = getPisteetHenkkaritY(henkkaritYleinen);
-  var pisteetHenkkaritN = getPisteetHenkkaritN(henkkaritNaiset);
-  //
-  var pisteetViisiottelutY = getPisteetHenkkaritY(viisiottelutYleinen);
-  var pisteetViisiottelutN = getPisteetHenkkaritN(viisiottelutNaiset);
-  //
-  var pisteetSeitsenottelutY = getPisteetHenkkaritY(seitsenottelutYleinen);
-  var pisteetSeitsenottelutN = getPisteetHenkkaritN(seitsenottelutNaiset);
-  //
-  var pisteetJoukkuekentatY = getPisteetHenkkaritY(joukkuekentatYleinen);
-  var pisteetJoukkuekentatN = getPisteetHenkkaritN(joukkuekentatNaiset);
-  //
-  var pisteetPystyhydratY = getPisteetHenkkaritY(pystyhydratYleinen);
-  var pisteetPystyhydratN = getPisteetHenkkaritN(pystyhydratNaiset);
-  //
-  var pisteetSviippitreenitY = getPisteetHenkkaritY(sviippitreenitYleinen);
-  var pisteetSviippitreenitN = getPisteetHenkkaritN(sviippitreenitNaiset);
-
-  writePistetaulu(pisteetHenkkaritY, pisteetHenkkaritN, "B");
-  writePistetaulu(pisteetViisiottelutY, pisteetViisiottelutN, "D");
-  writePistetaulu(pisteetSeitsenottelutY, pisteetSeitsenottelutN, "F");
-  writePistetaulu(pisteetJoukkuekentatY, pisteetJoukkuekentatN, "H");
-  writePistetaulu(pisteetPystyhydratY, pisteetPystyhydratN, "J");
-  writePistetaulu(pisteetSviippitreenitY, pisteetSviippitreenitN, "L");
+  // Write points for 'Henkkarit'
+  writePistetaulu(getPisteet(getHenkkaritYleinen(data)), getPisteet(getHenkkaritNaiset(data)), "B");
+  // Write points for '5o'
+  writePistetaulu(getPisteet(getViisiottelutYleinen(data)), getPisteet(getViisiottelutNaiset(data)), "D");
+  // Write points for '7o'
+  writePistetaulu(getPisteet(getSeitsenottelutYleinen(data)), getPisteet(getSeitsenottelutNaiset(data)), "F");
+  // Write points for 'JK'
+  writePistetaulu(getPisteet(getJoukkuekentatYleinen(data)), getPisteet(getJoukkuekentatNaiset(data)), "H");
+  // Write points for 'Pystyhydra'
+  writePistetaulu(getPisteet(getPystyhydratYleinen(data)), getPisteet(getPystyhydratNaiset(data)), "J");
+  // Write points for 'SmSv'
+  writePistetaulu(getPisteet(getSviippitreenitYleinen(data)), getPisteet(getSviippitreenitNaiset(data)), "L");
 }
 
-// Writes sheet 'Tulostaulu' according to clumnStart and columnEnd positions
+// Writes sheet 'Pistetaulu' according to clumn positions
 function writePistetaulu(pisteetY, pisteetN, column) {
   var rangeStringYleinen = "";
   var rangeStringNaiset = "";
@@ -73,7 +45,6 @@ function writePistetaulu(pisteetY, pisteetN, column) {
     rangeString = column + j;
     // get range according to given range string
     var henkkaritRange = sheet.getRange(rangeString);
-    //var tmpArray = [[tulostauluYleinen[i].nimi, tulostauluYleinen[i].edustus, tulostauluYleinen[i].tulos]];
     // finally write values to given range
     henkkaritRange.setValue(pisteetY[i]);
   }
@@ -87,203 +58,6 @@ function writePistetaulu(pisteetY, pisteetN, column) {
     // finally write values to given range
     henkkaritRange.setValue(pisteetN[i]);
   }
-}
-
-/* Henkkaripisteet
-*
-*
-*
-*
-*/
-
-function getPisteetHenkkaritY(tuloksetY) {
-  var henkkariPisteet = {
-    henkkariTampere : 0,
-    henkkariOulu : 0,
-    henkkariLappee : 0,
-    henkkariHelsinki : 0
-  }
-
-  var highestAmount = 30;
-  var evenCasesArray = [];
-
-  // iterate results 'Yleinen'
-  for (let i=0; i<tuloksetY.length; i++) {
-    if(i+1 < tuloksetY.length) {
-      // is next result equal
-      if(tuloksetY[i].tulos == tuloksetY[i+1].tulos) {
-        var evenCase = {
-          edustus : tuloksetY[i].edustus,
-          pisteet : (highestAmount-i)
-        }
-        evenCasesArray.push(evenCase);
-
-        if(i+2 < tuloksetY.length) {
-          if(tuloksetY[i].tulos == tuloksetY[i+2].tulos) {
-            continue;
-          }
-          else {
-            var evenCase = {
-              edustus : tuloksetY[i+1].edustus,
-              pisteet : (highestAmount-i-1)
-            }
-            evenCasesArray.push(evenCase);
-          }
-        }
-      }
-      else {
-        if(evenCasesArray == 0) {
-          if(tuloksetY[i].edustus.includes("Länsi")) {
-            henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
-          }
-          else if(tuloksetY[i].edustus.includes("Pohjoinen")) {
-            henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
-          }
-          else if(tuloksetY[i].edustus.includes("Itä")) {
-            henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
-          }
-          else if(tuloksetY[i].edustus.includes("Etelä")) {
-            henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
-          }
-        }
-        else {
-          var temp = 0;
-          evenCasesArray.forEach(function (evenCase) {
-            temp = temp + evenCase.pisteet;
-          });
-          var meanValue = temp/evenCasesArray.length;
-          evenCasesArray.forEach(function (evenCase) {
-            if(evenCase.edustus.includes("Länsi")) {
-              henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + meanValue;
-            }
-            else if(evenCase.edustus.includes("Pohjoinen")) {
-              henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + meanValue;
-            }
-            else if(evenCase.edustus.includes("Itä")) {
-              henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + meanValue;
-            }
-            else if(evenCase.edustus.includes("Etelä")) {
-              henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + meanValue;
-            }
-          });
-          evenCasesArray = [];
-        }
-      }
-    }
-    else {
-      if(tuloksetY[i].edustus.includes("Länsi")) {
-        henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
-      }
-      else if(tuloksetY[i].edustus.includes("Pohjoinen")) {
-        henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
-      }
-      else if(tuloksetY[i].edustus.includes("Itä")) {
-        henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
-      }
-      else if(tuloksetY[i].edustus.includes("Etelä")) {
-        henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
-      }
-    }
-  }
-
-  // Arrange to array for Pistetaulu writing
-  var henkkariPisteArray = [henkkariPisteet.henkkariOulu, henkkariPisteet.henkkariTampere, henkkariPisteet.henkkariLappee, henkkariPisteet.henkkariHelsinki];
-  return henkkariPisteArray;
-}
-
-function getPisteetHenkkaritN(tuloksetN) {
-  var henkkariPisteet = {
-    henkkariTampere : 0,
-    henkkariOulu : 0,
-    henkkariLappee : 0,
-    henkkariHelsinki : 0
-  }
-
-  var highestAmount = 30;
-  var evenCasesArray = [];
-
-  // iterate results 'Naiset'
-  for (let i=0; i<tuloksetN.length; i++) {
-    if(i+1 < tuloksetN.length) {
-      // is next result equal
-      if(tuloksetN[i].tulos == tuloksetN[i+1].tulos) {
-        var evenCase = {
-          edustus : tuloksetN[i].edustus,
-          pisteet : (highestAmount-i)
-        }
-        evenCasesArray.push(evenCase);
-
-        if(i+2 < tuloksetN.length) {
-          if(tuloksetN[i].tulos == tuloksetN[i+2].tulos) {
-            continue;
-          }
-          else {
-            var evenCase = {
-              edustus : tuloksetN[i+1].edustus,
-              pisteet : (highestAmount-i-1)
-            }
-            evenCasesArray.push(evenCase);
-          }
-        }
-      }
-      else {
-        if(evenCasesArray == 0) {
-          if(tuloksetN[i].edustus.includes("Länsi")) {
-            henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
-          }
-          else if(tuloksetN[i].edustus.includes("Pohjoinen")) {
-            henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
-          }
-          else if(tuloksetN[i].edustus.includes("Itä")) {
-            henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
-          }
-          else if(tuloksetN[i].edustus.includes("Etelä")) {
-            henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
-          }
-        }
-        else {
-          var temp = 0;
-          evenCasesArray.forEach(function (evenCase) {
-            temp = temp + evenCase.pisteet;
-          });
-          var meanValue = temp/evenCasesArray.length;
-          evenCasesArray.forEach(function (evenCase) {
-            if(evenCase.edustus.includes("Länsi")) {
-              henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + meanValue;
-            }
-            else if(evenCase.edustus.includes("Pohjoinen")) {
-              henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + meanValue;
-            }
-            else if(evenCase.edustus.includes("Itä")) {
-              henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + meanValue;
-            }
-            else if(evenCase.edustus.includes("Etelä")) {
-              henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + meanValue;
-            }
-          });
-          evenCasesArray = [];
-        }
-      }
-    }
-    else {
-      if(tuloksetN[i].edustus.includes("Länsi")) {
-        henkkariPisteet.henkkariTampere = henkkariPisteet.henkkariTampere + (highestAmount-i);
-      }
-      else if(tuloksetN[i].edustus.includes("Pohjoinen")) {
-        henkkariPisteet.henkkariOulu = henkkariPisteet.henkkariOulu + (highestAmount-i);
-      }
-      else if(tuloksetN[i].edustus.includes("Itä")) {
-        henkkariPisteet.henkkariLappee = henkkariPisteet.henkkariLappee + (highestAmount-i);
-      }
-      else if(tuloksetN[i].edustus.includes("Etelä")) {
-        henkkariPisteet.henkkariHelsinki = henkkariPisteet.henkkariHelsinki + (highestAmount-i);
-      }
-    }
-  }
-
-  // Arrange to array for Pistetaulu writing
-  var henkkariPisteArray = [henkkariPisteet.henkkariOulu, henkkariPisteet.henkkariTampere, henkkariPisteet.henkkariLappee, henkkariPisteet.henkkariHelsinki];
-  return henkkariPisteArray;
 }
 
 // Writes sheet 'Tulostaulu' according to clumnStart and columnEnd positions
@@ -325,6 +99,102 @@ function writeTulostaulu(tulostauluYleinen, tulostauluNaiset, columnStart,column
   }
 }
 
+// returns total points for a sport from series 'Yleinen'
+function getPisteet(tulokset) {
+  var pisteet = {
+    pisteetTampere : 0,
+    pisteetOulu : 0,
+    pisteetLappee : 0,
+    pisteetHelsinki : 0
+  }
+
+  var highestAmount = 30;
+  var evenCasesArray = [];
+
+  // iterate results 'Yleinen'
+  for (let i=0; i<tulokset.length; i++) {
+    if(i+1 < tulokset.length) {
+      // is next result equal
+      if(tulokset[i].tulos == tulokset[i+1].tulos) {
+        var evenCase = {
+          edustus : tulokset[i].edustus,
+          pisteet : (highestAmount-i)
+        }
+        evenCasesArray.push(evenCase);
+
+        if(i+2 < tulokset.length) {
+          if(tulokset[i].tulos == tulokset[i+2].tulos) {
+            continue;
+          }
+          else {
+            var evenCase = {
+              edustus : tulokset[i+1].edustus,
+              pisteet : (highestAmount-i-1)
+            }
+            evenCasesArray.push(evenCase);
+          }
+        }
+      }
+      else {
+        if(evenCasesArray == 0) {
+          if(tulokset[i].edustus.includes("Länsi")) {
+            pisteet.pisteetTampere = pisteet.pisteetTampere + (highestAmount-i);
+          }
+          else if(tulokset[i].edustus.includes("Pohjoinen")) {
+            pisteet.pisteetOulu = pisteet.pisteetOulu + (highestAmount-i);
+          }
+          else if(tulokset[i].edustus.includes("Itä")) {
+            pisteet.pisteetLappee = pisteet.pisteetLappee + (highestAmount-i);
+          }
+          else if(tulokset[i].edustus.includes("Etelä")) {
+            pisteet.pisteetHelsinki = pisteet.pisteetHelsinki + (highestAmount-i);
+          }
+        }
+        else {
+          var temp = 0;
+          evenCasesArray.forEach(function (evenCase) {
+            temp = temp + evenCase.pisteet;
+          });
+          var meanValue = temp/evenCasesArray.length;
+          evenCasesArray.forEach(function (evenCase) {
+            if(evenCase.edustus.includes("Länsi")) {
+              pisteet.pisteetTampere = pisteet.pisteetTampere + meanValue;
+            }
+            else if(evenCase.edustus.includes("Pohjoinen")) {
+              pisteet.pisteetOulu = pisteet.pisteetOulu + meanValue;
+            }
+            else if(evenCase.edustus.includes("Itä")) {
+              pisteet.pisteetLappee = pisteet.pisteetLappee + meanValue;
+            }
+            else if(evenCase.edustus.includes("Etelä")) {
+              pisteet.pisteetHelsinki = pisteet.pisteetHelsinki + meanValue;
+            }
+          });
+          evenCasesArray = [];
+        }
+      }
+    }
+    else {
+      if(tulokset[i].edustus.includes("Länsi")) {
+        pisteet.pisteetTampere = pisteet.pisteetTampere + (highestAmount-i);
+      }
+      else if(tulokset[i].edustus.includes("Pohjoinen")) {
+        pisteet.pisteetOulu = pisteet.pisteetOulu + (highestAmount-i);
+      }
+      else if(tulokset[i].edustus.includes("Itä")) {
+        pisteet.pisteetLappee = pisteet.pisteetLappee + (highestAmount-i);
+      }
+      else if(tulokset[i].edustus.includes("Etelä")) {
+        pisteet.pisteetHelsinki = pisteet.pisteetHelsinki + (highestAmount-i);
+      }
+    }
+  }
+
+  // Arrange to array for Pistetaulu writing
+  var pisteArray = [pisteet.pisteetOulu, pisteet.pisteetTampere, pisteet.pisteetLappee, pisteet.pisteetHelsinki];
+  return pisteArray;
+}
+
 // gets all data from "Pelatut tulokset" tab
 function iterateRows() {
   var sheet = SpreadsheetApp.getActive().getSheetByName("Pelatut tulokset");
@@ -353,11 +223,12 @@ function compareAsceOrder(a, b) {
 // returns array of henkkarit from series yleinen
 function getHenkkaritYleinen(data) {
   var henkkaritYleinen = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2] == "Henkkari") {
       var tulosString = +row[5];
       var newHenkkari = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -373,9 +244,18 @@ function getHenkkaritYleinen(data) {
               // use splice to cut old smaller result
               henkkaritYleinen.splice(henkkaritYleinen.indexOf(entry),1);
             }
+            else {
+              duplicate = true;
+            }
+          }
+          else {
+            
           }
         });
-        henkkaritYleinen.push(newHenkkari)
+        if (!duplicate) {
+          henkkaritYleinen.push(newHenkkari)
+          duplicate = false;
+        }
       }
     }
   });
@@ -386,11 +266,12 @@ function getHenkkaritYleinen(data) {
 // returns array of henkkarit fromUntitled spreadsheet series naiset
 function getHenkkaritNaiset(data) {
   var henkkaritNaiset = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2] == "Henkkari") {
       var tulosString = +row[5];
       var newHenkkari = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -408,7 +289,10 @@ function getHenkkaritNaiset(data) {
             }
           }
         });
-        henkkaritNaiset.push(newHenkkari)
+        if (!duplicate) {
+          henkkaritNaiset.push(newHenkkari)
+          duplicate = false;
+        }
       }
     }
   });
@@ -418,12 +302,13 @@ function getHenkkaritNaiset(data) {
 
 function getViisiottelutYleinen(data) {
   var viisiottelut = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2] == "5-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
       tulosString = +tulosString;
       var newViisiottelu = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -441,7 +326,10 @@ function getViisiottelutYleinen(data) {
             }
           }
         });
-        viisiottelut.push(newViisiottelu)
+        if (!duplicate) {
+          viisiottelut.push(newViisiottelu)
+          duplicate = false;
+        }
       }
     }
   });
@@ -451,12 +339,13 @@ function getViisiottelutYleinen(data) {
 
 function getViisiottelutNaiset(data) {
   var viisiottelutNaiset = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2] == "5-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
       tulosString = +tulosString;
       var newViisiottelu = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -474,7 +363,10 @@ function getViisiottelutNaiset(data) {
             }
           }
         });
-        viisiottelutNaiset.push(newViisiottelu)
+        if (!duplicate) {
+          viisiottelutNaiset.push(newViisiottelu)
+          duplicate = false;
+        }
       }
     }
   });
@@ -484,12 +376,13 @@ function getViisiottelutNaiset(data) {
 
 function getSeitsenottelutYleinen(data) {
   var seitsenottelut = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2] == "7-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
       tulosString = +tulosString;
       var newSeitsenottelu = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -507,7 +400,10 @@ function getSeitsenottelutYleinen(data) {
             }
           }
         });
-        seitsenottelut.push(newSeitsenottelu)
+        if (!duplicate) {
+          seitsenottelut.push(newSeitsenottelu)
+          duplicate = false;
+        }
       }
     }
   });
@@ -517,12 +413,13 @@ function getSeitsenottelutYleinen(data) {
 
 function getSeitsenottelutNaiset(data) {
   var seitsenottelutNaiset = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2] == "7-ottelu") {
       var tulosString = row[5].toString().replace(",",".");
       tulosString = +tulosString;
       var newSeitsenottelu = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -540,7 +437,10 @@ function getSeitsenottelutNaiset(data) {
             }
           }
         });
-        seitsenottelutNaiset.push(newSeitsenottelu)
+        if (!duplicate) {
+          seitsenottelutNaiset.push(newSeitsenottelu)
+          duplicate = false;
+        }
       }
     }
   });
@@ -550,11 +450,12 @@ function getSeitsenottelutNaiset(data) {
 
 function getJoukkuekentatYleinen(data) {
   var joukkuekentat = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2].includes("Joukkuekenttä")) {
       var tulosString = +row[5];
       var newJoukkuekentta = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -572,7 +473,10 @@ function getJoukkuekentatYleinen(data) {
             }
           }
         });
-        joukkuekentat.push(newJoukkuekentta)
+        if (!duplicate) {
+          joukkuekentat.push(newJoukkuekentta)
+          duplicate = false;
+        }
       }
     }
   });
@@ -582,11 +486,12 @@ function getJoukkuekentatYleinen(data) {
 
 function getJoukkuekentatNaiset(data) {
   var joukkuekentatNaiset = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2].includes("Joukkuekenttä")) {
       var tulosString = +row[5];
       var newJoukkuekentta = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -604,7 +509,10 @@ function getJoukkuekentatNaiset(data) {
             }
           }
         });
-        joukkuekentatNaiset.push(newJoukkuekentta)
+        if (!duplicate) {
+          joukkuekentatNaiset.push(newJoukkuekentta)
+          duplicate = false;
+        }
       }
     }
   });
@@ -614,11 +522,12 @@ function getJoukkuekentatNaiset(data) {
 
 function getPystyhydratYleinen(data) {
   var pystyhydrat = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2].includes("Pystyhydra")) {
       var tulosString = +row[5];
       var newPystyhydra = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -636,7 +545,10 @@ function getPystyhydratYleinen(data) {
             }
           }
         });
-        pystyhydrat.push(newPystyhydra)
+        if (!duplicate) {
+          pystyhydrat.push(newPystyhydra)
+          duplicate = false;
+        }
       }
     }
   });
@@ -646,11 +558,12 @@ function getPystyhydratYleinen(data) {
 
 function getPystyhydratNaiset(data) {
   var pystyhydratNaiset = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2].includes("Pystyhydra")) {
       var tulosString = +row[5];
       var newPystyhydra = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -668,7 +581,10 @@ function getPystyhydratNaiset(data) {
             }
           }
         });
-        pystyhydratNaiset.push(newPystyhydra)
+        if (!duplicate) {
+          pystyhydratNaiset.push(newPystyhydra)
+          duplicate = false;
+        }
       }
     }
   });
@@ -678,11 +594,12 @@ function getPystyhydratNaiset(data) {
 
 function getSviippitreenitYleinen(data) {
   var sviippitreenit = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2].includes("Smuulin Sviippitreeni")) {
       var tulosString = +row[5];
       var newSviippitreeni = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -700,7 +617,10 @@ function getSviippitreenitYleinen(data) {
             }
           }
         });
-        sviippitreenit.push(newSviippitreeni)
+        if (!duplicate) {
+          sviippitreenit.push(newSviippitreeni)
+          duplicate = false;
+        }
       }
     }
   });
@@ -710,11 +630,12 @@ function getSviippitreenitYleinen(data) {
 
 function getSviippitreenitNaiset(data) {
   var sviippitreenitNaiset = [];
+  var duplicate = false;
   data.forEach(function (row) {
     if (row[2].includes("Smuulin Sviippitreeni")) {
       var tulosString = +row[5];
       var newSviippitreeni = {
-        nimi : row[4],
+        nimi : row[4].trim(),
         edustus : row[1],
         sarja : row[3],
         tulos : tulosString
@@ -732,7 +653,10 @@ function getSviippitreenitNaiset(data) {
             }
           }
         });
-        sviippitreenitNaiset.push(newSviippitreeni)
+        if (!duplicate) {
+          sviippitreenitNaiset.push(newSviippitreeni)
+          duplicate = false;
+        }
       }
     }
   });
